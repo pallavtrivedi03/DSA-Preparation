@@ -176,6 +176,8 @@ func quickSortWithSwiftFilter<T: Comparable>(_ a: [T]) -> [T] {
 
 //-------------------------------------------------------------------------------------------------------------------//
 
+//Merge Sort
+
 func merge(left: [Int], right: [Int]) -> [Int] {
     var mainArray = [Int]()
     let countLeft = left.count
@@ -221,6 +223,52 @@ func mergeSort(arr: [Int]) -> [Int] {
     let sortedRight = mergeSort(arr: right)
     return merge(left: sortedLeft, right: sortedRight)
 }
+//-------------------------------------------------------------------------------------------------------------------//
+// Question 3 - Find the "Kth" max and min element of an array
+
+// This will be done using min heap (once we reach to heaps).
+
+//-------------------------------------------------------------------------------------------------------------------//
+// Question 4 - Given an array which consists of only 0, 1 and 2. Sort the array without using any sorting algo.
+// or Dutch National Flag Problem
+
+/*
+ Conditions that are to be satisfied
+    - All elements towards left of low will be 0
+    - All elements towards right of high will be 2
+    - All elements between low and mid-1 will be 1
+ 
+While iterating, check if a[mid] is
+    0 -> swap(a[low], a[mid]) and low++, mid++
+    1 -> mid++
+    2 -> swap(a[mid], a[high] and high--
+ 
+ Iteration will run till high > mid
+ */
+
+func dutchNationalFlagProblem(arr: [Int]) -> [Int] {
+    var a = arr
+    var low = 0, mid = 0, high = a.count - 1
+    while mid <= high {
+        switch a[mid] {
+        case 0:
+            a.swapAt(low, mid)
+            low += 1
+            mid += 1
+            break
+        case 1:
+            mid += 1
+            break
+        case 2:
+            a.swapAt(mid, high)
+            high -= 1
+            break
+        default:
+            break
+        }
+    }
+    return a
+}
 
 //----------------------------------------------- TEST FUNCTION --------------------------------------------------------------------//
 
@@ -237,6 +285,7 @@ func testFunc() {
     //    quickSort(arr: &numbers, low: 0, high: 13)
     //    print(numbers)
     //    print(mergeSort(arr: [2,2,3,1,4,6,5,7,8]))
+    //    print(dutchNationalFlagProblem(arr: [0,2,1,2,0,0,2]))
 }
 
 testFunc()
