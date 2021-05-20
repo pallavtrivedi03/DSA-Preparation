@@ -28,6 +28,8 @@ func reverseArrayRecursively(arr: [Int], start: Int, end: Int) {
     reverseArrayRecursively(arr: a, start: start+1, end: end-1)
 }
 
+//-------------------------------------------------------------------------------------------------------------------//
+
 //Question 2 - Get min and max of an array
 
 //Iterative approach
@@ -71,7 +73,7 @@ func getMinMaxRecursively(arr: [Int], low: Int, high: Int) -> (Int, Int) {
     
 }
 
-// Sortings
+//------------------------------------------------- SORTINGS ------------------------------------------------------------------//
 
 //Bubble Sort
 //Logic - 01,12,23,34 | 01,12,23 | 01,12 | 01
@@ -94,6 +96,8 @@ func bubbleSort(arr: [Int]) -> [Int] {
     return a
 }
 
+//-------------------------------------------------------------------------------------------------------------------//
+
 //Selection Sort
 //Logic - 01,02,03,04 | 12,13,14 | 23,24 | 34
 func selectionSort(arr: [Int]) -> [Int] {
@@ -114,6 +118,8 @@ func selectionSort(arr: [Int]) -> [Int] {
     }
     return a
 }
+
+//-------------------------------------------------------------------------------------------------------------------//
 
 //Quick Sort
 func partition(arr: inout [Int], low: Int, high: Int) -> Int {
@@ -168,6 +174,56 @@ func quickSortWithSwiftFilter<T: Comparable>(_ a: [T]) -> [T] {
     return quickSortWithSwiftFilter(less) + equal + quickSortWithSwiftFilter(greater)
 }
 
+//-------------------------------------------------------------------------------------------------------------------//
+
+func merge(left: [Int], right: [Int]) -> [Int] {
+    var mainArray = [Int]()
+    let countLeft = left.count
+    let countRight = right.count
+    var i = 0, j = 0
+    
+    while(i < countLeft && j < countRight) {
+        if (left[i] < right[j]) {
+            mainArray.append(left[i])
+            i += 1
+        } else {
+            mainArray.append(right[j])
+            j += 1
+        }
+    }
+    
+    while (i < countLeft) {
+        mainArray.append(left[i])
+        i += 1
+    }
+        
+    while (j < countRight) {
+        mainArray.append(right[j])
+        j += 1
+    }
+    return mainArray
+}
+
+func mergeSort(arr: [Int]) -> [Int] {
+    if arr.count < 2 {
+        return arr
+    }
+    let mid = arr.count/2
+    var left = [Int]()
+    var right = [Int]()
+    for i in 0 ..< mid {
+        left.append(arr[i])
+    }
+    for i in mid ..< arr.count {
+        right.append(arr[i])
+    }
+    let sortedLeft = mergeSort(arr: left)
+    let sortedRight = mergeSort(arr: right)
+    return merge(left: sortedLeft, right: sortedRight)
+}
+
+//----------------------------------------------- TEST FUNCTION --------------------------------------------------------------------//
+
 func testFunc() {
     //    reverseArrayIteratively(arr: [1,2,3,4,5,6])
     //    reverseArrayRecursively(arr: [1,2,3,4,5,6], start: 0, end: 5)
@@ -180,7 +236,7 @@ func testFunc() {
     //    var numbers = [13, 77, 20, 45, 2, 15, 0, 59, 5, 68, 51, 1, -1, 8]
     //    quickSort(arr: &numbers, low: 0, high: 13)
     //    print(numbers)
-    
+    //    print(mergeSort(arr: [2,2,3,1,4,6,5,7,8]))
 }
 
 testFunc()
