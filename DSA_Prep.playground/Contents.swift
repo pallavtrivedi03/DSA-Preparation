@@ -198,7 +198,7 @@ func merge(left: [Int], right: [Int]) -> [Int] {
         mainArray.append(left[i])
         i += 1
     }
-        
+    
     while (j < countRight) {
         mainArray.append(right[j])
         j += 1
@@ -234,14 +234,14 @@ func mergeSort(arr: [Int]) -> [Int] {
 
 /*
  Conditions that are to be satisfied
-    - All elements towards left of low will be 0
-    - All elements towards right of high will be 2
-    - All elements between low and mid-1 will be 1
+ - All elements towards left of low will be 0
+ - All elements towards right of high will be 2
+ - All elements between low and mid-1 will be 1
  
-While iterating, check if a[mid] is
-    0 -> swap(a[low], a[mid]) and low++, mid++
-    1 -> mid++
-    2 -> swap(a[mid], a[high] and high--
+ While iterating, check if a[mid] is
+ 0 -> swap(a[low], a[mid]) and low++, mid++
+ 1 -> mid++
+ 2 -> swap(a[mid], a[high] and high--
  
  Iteration will run till high > mid
  */
@@ -269,6 +269,87 @@ func dutchNationalFlagProblem(arr: [Int]) -> [Int] {
     }
     return a
 }
+//-------------------------------------------------------------------------------------------------------------------//
+//Question 5: Move all the negative elements to one side of the array
+
+//Approach 1 -> Sort i.e. nLogn
+
+//Approch 2 -> Two Pointer
+/*
+ Iterate while h > l
+ if both a[l] and a[h] are -ve, l++
+ else if a[l] is +ve and a[h] is -ve, swap, l++, h--
+ else if a[l] is -ve and a[h] is +ve, l++, h--
+ else if both a[l] and a[h] are +ve, r--
+ */
+
+func moveNegativeToLeft(arr: [Int]) -> [Int] {
+    var a = arr
+    var l = 0
+    var h = a.count - 1
+    while (h > l) {
+        print("in the loop")
+        if (a[l] < 0 && a[h] < 0) {
+            l += 1
+        }
+        else if (a[l] > 0 && a[h] < 0) {
+            a.swapAt(l, h)
+            l += 1
+            h -= 1
+        }
+        else if (a[l] < 0 && a[h] >= 0) {
+            l += 1
+            h -= 1
+        }
+        else if (a[l] > 0 && a[h] >= 0) {
+            h -= 1
+        }
+    }
+    return a
+}
+
+//-------------------------------------------------------------------------------------------------------------------//
+//Question 6: Find the Union and Intersection of the two sorted arrays.
+
+//Approach 1 -
+/*
+ Apply the logic of merge (from merge sort). Just add one more condition for handling equality.
+ If the elements are equal, add them in both union and intersection.
+ */
+
+func getUnionAndIntersection(a1: [Int], a2: [Int]) -> ([Int], [Int]) {
+    var union = [Int]()
+    var intersection = [Int]()
+    var e = 0, f = 0
+    
+    while (e < a1.count && f < a2.count) {
+        if (a1[e] < a2[f]) {
+            union.append(a1[e])
+            e += 1
+        }
+        else if (a1[e] > a2[f]) {
+            union.append(a2[f])
+            f += 1
+        }
+        else {
+            union.append(a1[e])
+            intersection.append(a1[e])
+            e += 1
+            f += 1
+        }
+    }
+    
+    while (e < a1.count) {
+        union.append(a1[e])
+        e += 1
+    }
+    while (f < a2.count) {
+        union.append(a2[f])
+        f += 1
+    }
+    
+    return (union,intersection)
+}
 
 //----------------------------------------------- TEST FUNCTION --------------------------------------------------------------------//
 
@@ -286,6 +367,10 @@ func testFunc() {
     //    print(numbers)
     //    print(mergeSort(arr: [2,2,3,1,4,6,5,7,8]))
     //    print(dutchNationalFlagProblem(arr: [0,2,1,2,0,0,2]))
+    //    print(moveNegativeToLeft(arr: [-12,-11,10,-4,2,0,-7,2,6,8]))
+    
+    //    let unionAndIntersection = getUnionAndIntersection(a1: [1,3,4,5,7], a2: [2,3,5,6])
+    //    print("Union = \(unionAndIntersection.0) \nIntersection = \(unionAndIntersection.1)")
 }
 
 testFunc()
