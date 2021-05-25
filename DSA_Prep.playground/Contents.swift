@@ -351,6 +351,84 @@ func getUnionAndIntersection(a1: [Int], a2: [Int]) -> ([Int], [Int]) {
     return (union,intersection)
 }
 
+//-------------------------------------------------------------------------------------------------------------------//
+/*
+ Rotation of an Array.
+ 
+ Approach 1 - Make temp array and then append
+ Approach 2 - Reverse the sub arrays, and then reverse complete array (implemented below)
+ Appraoch 3 - Juggligh Alogrithm
+ 
+ Say n = 12, d = 3, a = 1,2,3,4,5,6,7,8,9,10,11,12]
+ Take GCD of n,d (3 in this case)
+ Because GCD is 3, make 3 sets
+ [1,4,7,10]
+ [2,5,8,11]
+ [3,6,9,12]
+ 
+ Now rotate elements of set 1 -> 4,2,3,7,5,6,10,8,9,1,11,12
+ Rotate elements of set 2 -> 4,5,3,7,8,6,10,11,9,1,2,12
+ Rotate elements of set 3 -> 4,5,6,7,8,9,10,11,12,1,2,3      => Answer
+ */
+
+//Question 7: Write a program to cyclically rotate an array by one.
+
+func reverseArray(low: Int, high: Int, a: inout [Int]) {
+    var l = low, h = high
+    while(l < h) {
+        a.swapAt(l, h)
+        l += 1
+        h -= 1
+    }
+}
+
+func rotateArray(d: Int, arr: [Int]) -> [Int] {
+    //Considering left rotation is to be done. [0, d-1], [d,n-1]
+    //If right rotation is to be done, then [0, n-d-1], [n-d, n-1]
+    var a = arr, n = arr.count
+    reverseArray(low: 0, high: d-1, a: &a)
+    reverseArray(low: d, high: n-1, a: &a)
+    reverseArray(low: 0, high: n-1, a: &a)
+    return a
+}
+
+//-------------------------------------------------------------------------------------------------------------------//
+//Question 8: find Largest sum contiguous Subarray [V. IMP]
+/*
+ Approach: Kadane's Algo
+ */
+
+func largestSumContiguousSubArray(arr: [Int]) -> [Int] {
+    var a = [Int]()     // Temp array for returning (optional)
+    
+    var start = 0           // to track the starting index of sub array
+    var end = 0             // to track the end index of sub array
+    var s = 0               // for updating start
+    var maxSum = 0          // for storing max sum
+    var currentSum = 0      // for storing sum till here
+    var i = 0               // counter
+    
+    while i < arr.count {
+        currentSum += arr[i]            // keep updating the sum till here
+        
+        if (currentSum < 0) {           // if sum till here got -ve, then array till here is to be discarded. So update s ahead of this point
+            currentSum = 0
+            s = i + 1
+        }
+        if (currentSum > maxSum) {      // if summ till here is > max sum so far, update max sum, start with s and end with i (this point)
+            maxSum = currentSum
+            end = i
+            start = s
+        }
+        i += 1
+    }
+    
+    for j in start ... end {
+        a.append(arr[j])
+    }
+    return a
+}
+
 //----------------------------------------------- TEST FUNCTION --------------------------------------------------------------------//
 
 func testFunc() {
@@ -371,6 +449,8 @@ func testFunc() {
     
     //    let unionAndIntersection = getUnionAndIntersection(a1: [1,3,4,5,7], a2: [2,3,5,6])
     //    print("Union = \(unionAndIntersection.0) \nIntersection = \(unionAndIntersection.1)")
+    //    print(rotateArray(d: 3, arr: [1,2,3,4,5,6,7]))
+    //    print(largestSumContiguousSubArray(arr: [-2,-3,4,-1,-2,1,5,-3]))
 }
 
 testFunc()
