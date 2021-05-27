@@ -429,6 +429,61 @@ func largestSumContiguousSubArray(arr: [Int]) -> [Int] {
     return a
 }
 
+//-------------------------------------------------------------------------------------------------------------------//
+//Question 9: Minimise the maximum difference between heights [V.IMP]
+
+/*
+ Logic -
+ Sort the array so that elements having minimum difference will be adjacent.
+ Now in order minimise the difference, smaller element should be increased, and larger should be decreased.
+ So for sure, first element would be increased and last element will be decreased.
+ Rest all elements will be compared with these two to find minimum and maximum.
+ So iterate and keep finding max and min. Also keep a track of minimum difference till now. If max-min is smaller than exisiting, update it.
+ */
+
+func minimiseTheHeightDifference(arr: [Int], k: Int) -> Int {
+    var sortedArray = arr
+    let n = arr.count - 1
+    quickSort(arr: &sortedArray, low: 0, high: n)
+    
+    var minDifference = sortedArray[n] - sortedArray[0]
+    
+    for i in 1 ..< n {
+        let maxNum = max(sortedArray[i-1]+k, sortedArray[n]-k)
+        let minNum = min(sortedArray[i]-k, sortedArray[0]+k)
+        minDifference = min(minDifference, maxNum - minNum)
+    }
+    return minDifference
+}
+//-------------------------------------------------------------------------------------------------------------------//
+//Question 10: Minimum no. of Jumps to reach end of an array
+
+func minimumJumpsToReachEndOfTheArray(arr:[Int]) -> Int {
+    var currentIndex = 0
+    var jumps = 1
+    
+    while (currentIndex < arr.count) {
+        
+        var newIndex = arr[currentIndex] + currentIndex
+        
+        if currentIndex == 0 {
+            currentIndex += 1   // 1 is added because indexing starts from 0
+            newIndex += 1       // Because the one that we added in current index is missing in new index
+        }
+        
+        if (arr[currentIndex] == 0) {
+            return -1
+        }
+        if (newIndex < arr.count) {
+            jumps += 1
+        } else {
+            return jumps
+        }
+        currentIndex = newIndex
+    }
+    return -1
+}
+
 //----------------------------------------------- TEST FUNCTION --------------------------------------------------------------------//
 
 func testFunc() {
@@ -451,6 +506,10 @@ func testFunc() {
     //    print("Union = \(unionAndIntersection.0) \nIntersection = \(unionAndIntersection.1)")
     //    print(rotateArray(d: 3, arr: [1,2,3,4,5,6,7]))
     //    print(largestSumContiguousSubArray(arr: [-2,-3,4,-1,-2,1,5,-3]))
+    //    print("Miniminum Difference can be \(minimiseTheHeightDifference(arr: [1,5,9,1,2,6,7,1,9,10], k: 4))")
+    //    print("Jumps required \(minimumJumpsToReachEndOfTheArray(arr: [1,3,5,8,9,2,6,7,6,8,9]))")
+    //    print("Jumps required \(minimumJumpsToReachEndOfTheArray(arr: [1,1,1,1,1,1,1,1,1,1,1]))")
+    
 }
 
 testFunc()
